@@ -1,3 +1,5 @@
+import SearchInput from '@/components/search-input'
+
 const RootPage = () => {
   return (
     <div className=" h-full p4 space-y-2">
