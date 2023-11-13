@@ -1,9 +1,7 @@
-import { UserButton } from '@clerk/nextjs'
-
 const RootPage = () => {
   return (
-    <div>
-      <UserButton afterSignOutUrl="/" />
+    <div className=" h-full p4 space-y-2">
+      <SearchInput />
     </div>
   )
 }
