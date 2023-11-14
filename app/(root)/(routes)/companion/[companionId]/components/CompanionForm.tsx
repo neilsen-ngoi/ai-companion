@@ -10,6 +10,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  FormLabel,
 } from '@/components/ui/form'
 import { Separator } from '@/components/ui/separator'
 interface CompanionFormProps {
@@ -87,6 +88,17 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
               </FormItem>
             )}
           />
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className=" col-span-2 md:col-span-1">
+                  <FormLabel></FormLabel>
+                </FormItem>
+              )}
+            />
+          </div>
         </form>
       </Form>
     </div>
