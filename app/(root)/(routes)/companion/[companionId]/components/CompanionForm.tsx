@@ -1,4 +1,5 @@
 'use client'
+import axios from 'axios'
 import { ImageUpload } from '@/components/ui/image-upload'
 import * as z from 'zod'
 import { Category, Companion } from '@prisma/client'
@@ -83,7 +84,17 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
   //loading state
   const isLoading = form.formState.isSubmitting
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+    //axios stuff
+    try {
+      if (!initialData) {
+        await axios.patch(`/api/companion/${initialData.id}`, values)
+      } else {
+        // create companion functionality
+        await axios.post('/api/companion', values)
+      }
+    } catch (error) {
+      console.log(error, 'something went wrong')
+    }
   }
 
   return (
@@ -95,9 +106,9 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
         >
           <div className=" space-y-2 w-full ">
             <div>
-              <h3 className=" text-lg font-medium">general infomation</h3>
+              <h3 className=" text-lg font-medium">General infomation</h3>
               <p className="text-sm text-muted-foreground">
-                general info about your Companion
+                General info about your Companion
               </p>
             </div>
             <Separator className="bg-primary/10" />
@@ -125,7 +136,11 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
                 <FormItem className=" col-span-2 md:col-span-1">
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoading} placeholder="Elon" {...field} />
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Elon Tusk"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>Name of Companion</FormDescription>
                   <FormMessage />
@@ -137,11 +152,11 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
               control={form.control}
               render={({ field }) => (
                 <FormItem className=" col-span-2 md:col-span-1">
-                  <FormLabel>description</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="CEO of Tesla"
+                      placeholder="CEO of Tuskla"
                       {...field}
                     />
                   </FormControl>
@@ -188,7 +203,7 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
           </div>
           <div className=" space-y-2 w-full">
             <div>
-              <h3 className=" text-lg font-medium">configuration</h3>
+              <h3 className=" text-lg font-medium">Configuration</h3>
               <p className=" text-sm text-muted-foreground">
                 Detailed instructon for AI behaviour
               </p>
@@ -233,7 +248,7 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
                   />
                 </FormControl>
                 <FormDescription>
-                  Describe your companion&apos;s backstory and relevant details.
+                  Provide an example conversation.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
