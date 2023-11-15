@@ -4,6 +4,8 @@ import React from 'react'
 import { useToast } from './ui/use-toast'
 import { BotAvatar } from './Bot-avatar'
 import { useTheme } from 'next-themes'
+import { BeatLoader } from 'react-spinners'
+import { UserAvatar } from './UserAvatar'
 
 interface ChatMessageProps {
   role: 'system' | 'user'
@@ -34,8 +36,13 @@ const ChatMessage = ({ role, content, isLoading, src }: ChatMessageProps) => {
     >
       {role !== 'user' && src && <BotAvatar src={src} />}
       <div className="rounded-md px-4 py-2 max-w-sm text-sm bg-primary/10">
-        {isLoading ? 'Loading...' : content}
+        {isLoading ? (
+          <BeatLoader size={5} color={theme === 'light' ? 'black' : 'white'} />
+        ) : (
+          content
+        )}
       </div>
+      {role ==== "user" && <UserAvatar />}
     </div>
   )
 }
