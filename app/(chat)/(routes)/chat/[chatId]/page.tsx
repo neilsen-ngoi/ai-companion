@@ -9,13 +9,13 @@ interface ChatIdPageProps {
   }
 }
 
-const ChatIdPage = ({ params }: ChatIdPageProps) => {
+const ChatIdPage = async ({ params }: ChatIdPageProps) => {
   const { userId } = auth()
   if (!userId) {
     return redirectToSignIn()
   }
 
-  const companion = await prismadb.companion.findMany({
+  const companion = await prismadb.companion.findUnique({
     where: {
       id: params.chatId,
     },
