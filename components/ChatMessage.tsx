@@ -6,8 +6,10 @@ import { BotAvatar } from './Bot-avatar'
 import { useTheme } from 'next-themes'
 import { BeatLoader } from 'react-spinners'
 import { UserAvatar } from './UserAvatar'
+import { Button } from './ui/button'
+import { Copy, icons } from 'lucide-react'
 
-interface ChatMessageProps {
+export interface ChatMessageProps {
   role: 'system' | 'user'
   content?: string
   isLoading?: boolean
@@ -42,7 +44,18 @@ const ChatMessage = ({ role, content, isLoading, src }: ChatMessageProps) => {
           content
         )}
       </div>
-      {role ==== "user" && <UserAvatar />}
+      {role === 'user' && <UserAvatar />}
+
+      {role !== 'user' && !isLoading && (
+        <Button
+          onClick={onCopy}
+          size="icon"
+          variant="ghost"
+          className=" opacity-0 group-hover:opacity-100 transition"
+        >
+          <Copy className=" w-4 h-4" />
+        </Button>
+      )}
     </div>
   )
 }
