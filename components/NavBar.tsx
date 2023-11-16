@@ -7,6 +7,7 @@ import { Poppins } from 'next/font/google'
 import { ModeToggle } from './mode-toggle'
 import { UserButton } from '@clerk/nextjs'
 import MobileSidebar from './mobile-sidebar'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 const font = Poppins({
   weight: '600',
@@ -14,6 +15,7 @@ const font = Poppins({
 })
 
 const NavBar = () => {
+  const proModal = useProModal()
   return (
     <div
       className=" fixed w-full z-50 flex justify-between items-center py2 px-4 border-b
@@ -33,7 +35,7 @@ const NavBar = () => {
         </Link>
       </div>
       <div className=" flex items-center gap-x-3">
-        <Button variant="premium" size="sm">
+        <Button onClick={proModal.onOpen} variant="premium" size="sm">
           upgrade
           <Sparkles className=" h-4 w-4 fill-white text-white ml-2" />
         </Button>
