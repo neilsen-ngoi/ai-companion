@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent } from 'react'
 import { ChatRequestOptions } from 'ai'
 import { Input } from './ui/input'
-import { SendHorizontal } from 'lucide-react'
+import { SendHorizonal } from 'lucide-react'
 import { Button } from './ui/button'
 
 interface ChatFormProps {
@@ -34,7 +34,7 @@ const ChatForm = ({
         className=" rounded-lg bg-primary/10"
       />
       <Button disabled={isLoading} variant="ghost">
-        <SendHorizontal className="h-6 w-6" />
+        <SendHorizonal className="h-6 w-6" />
       </Button>
     </form>
   )
