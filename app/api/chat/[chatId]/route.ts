@@ -28,7 +28,6 @@ export async function POST(
     const companion = await prismadb.companion.update({
       where: {
         id: params.chatId,
-        userId: user.id,
       },
       data: {
         messages: {
@@ -86,6 +85,57 @@ export async function POST(
       apiKey: process.env.REPLICATE_API_TOKEN,
       callbackManager: CallbackManager.fromHandlers(handlers),
     })
+
+    model.verbose = true
+
+    const resp = String(
+      await model
+        .call(
+          `
+        only generate plain sentences without prefix of who is speaking.
+        DO NOT use ${name}: prefix.
+        
+        ${companion.instructions}
+
+        Below are relevant details about ${companion.name}'s past and the conversation you are in.
+        ${relevantHistory}
+
+
+        ${recentChatHistory}\n${companion.name}:`
+        )
+        .catch(console.error)
+    )
+    // cleaning the data
+    const cleaned = resp.replaceAll(',', '')
+    const chunks = cleaned.split('\n')
+    const response = chunks[0]
+
+    await memoryManager.writeToHistory('' + response.trim(), companionKey)
+    var Readable = require('stream').Readable
+
+    let s = new Readable()
+    s.push(response)
+    s.push(null)
+
+    if (response !== undefined && response.length > 1) {
+      memoryManager.writeToHistory('' + response.trim(), companionKey)
+      await prismadb.companion.update({
+        where: {
+          id: params.chatId,
+        },
+        data: {
+          messages: {
+            create: {
+              content: response.trim(),
+              role: 'system',
+              userId: user.id,
+            },
+          },
+        },
+      })
+    }
+
+    return new StreamingTextResponse(s)
   } catch (error) {
     console.log('CHAT_POST', error)
     return new NextResponse('Internal error', { status: 500 })
